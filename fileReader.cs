@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,11 +15,10 @@ namespace fileReader
     public class FileReader
     {
 
-
+        //finds every file in the archive
         private static Entry[] GetEntries(Stream stream)
         {
-            if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             using (var reader = new BinaryReader(stream, Encoding.Default, true))
             {
@@ -29,8 +28,7 @@ namespace fileReader
                 {
                     var entry = new Entry(reader);
 
-                    if (entry.Position + entry.Length == stream.Length)
-                        break;
+                    if (entry.Position + entry.Length == stream.Length) break;
 
                     entries.Add(entry);
                 }
@@ -38,36 +36,19 @@ namespace fileReader
                 return entries.ToArray();
             }
         }
-        /*
-        private static string GetPath(string fileName)
-        {
-            if (fileName == null)
-                throw new ArgumentNullException(nameof(fileName));
-
-            const string directory = @"";
-
-            var path = Path.Combine(directory, fileName);
-
-            return path;
-        }
-        */
-
-
-
 
         public static void Extract(string fileName, string dir, string fuck)
         {
             //var path = GetPath(fileName);
-            bool isSound;
+            bool isSound = false;
             int fileCount = 0;
             using (var stream = File.OpenRead(fileName))
             using (var reader = new BinaryReader(stream))
             {
                 var entries = GetEntries(stream);
                 string outputFolder = dir;
-                
-                //this part is kinda stupid but my tiny 15 year old brain could not think of anything better
-                if(fuck == "SND.DAT")
+
+                if (fuck == "SND.DAT" || fuck == "snd.DAT" || fuck == "SND.dat" || fuck == "snd.dat")
                 {
                     isSound = true;
                 }
@@ -75,6 +56,7 @@ namespace fileReader
                 {
                     isSound = false;
                 }
+
                 var directory = Directory.CreateDirectory(@"C:\Nitemare\UIF");
                 var index = 0;
 
@@ -92,7 +74,7 @@ namespace fileReader
                         directory = Directory.CreateDirectory(@"C:\Nitemare\SND");
                         var entryPath = "";
                         //this whole bs detects what extension the thing is
-                        if (fileCount == 0)//I have NO fucking idea why but the soundbank still outputs as .VOC
+                        if (fileCount == 0) 
                         {
                             entryPath = Path.Combine(directory.FullName, $"{index++:D3}.ibk");
                         }
@@ -100,18 +82,15 @@ namespace fileReader
                         {
                             entryPath = Path.Combine(directory.FullName, $"{index++:D3}.mid");
                         }
-                        else
+                        if(fileCount > 15)
                         {
                             entryPath = Path.Combine(directory.FullName, $"{index++:D3}.voc");
                         }
-                        fileCount += 1; 
-                        //var entryPath = Path.Combine(directory.FullName, $"{index++:D3}.PCX");
+                        fileCount += 1;
                         var entryData = reader.ReadBytes(entry.Length);
                         File.WriteAllBytes(entryPath, entryData);
                     }
-                    
 
-                    
                 }
             }
         }
@@ -124,8 +103,7 @@ namespace fileReader
 
         public Entry(BinaryReader reader)
         {
-            if (reader == null)
-                throw new ArgumentNullException(nameof(reader));
+            if (reader == null) throw new ArgumentNullException(nameof(reader));
 
             Length = reader.ReadUInt16();
             Position = reader.ReadUInt32();
