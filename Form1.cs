@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -46,7 +46,7 @@ namespace N3D_UIFExtractor
                     //textBox1.Text = ofd.SafeFileName;
                     String directory = ofd.FileName;
                     String file = ofd.SafeFileName;
-                    String output = "Successfully extracted to C:\\Nitemare!";
+                    String output = "Successfully extracted to " + folder;
                     String whole = (directory);
                     textBox1.Text = whole;
 
