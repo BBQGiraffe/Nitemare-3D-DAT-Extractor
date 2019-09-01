@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -57,7 +57,7 @@ namespace fileReader
                     isSound = false;
                 }
 
-                var directory = Directory.CreateDirectory(@"C:\Nitemare\UIF");
+                var directory = Directory.CreateDirectory(outputFolder + "\\UIF");
                 var index = 0;
 
                 foreach (var entry in entries)
@@ -71,7 +71,7 @@ namespace fileReader
                     }
                     else
                     {
-                        directory = Directory.CreateDirectory(@"C:\Nitemare\SND");
+                        directory = Directory.CreateDirectory(outputFolder + "\\SND");
                         var entryPath = "";
                         //this whole bs detects what extension the thing is
                         if (fileCount == 0) 
@@ -88,7 +88,13 @@ namespace fileReader
                         }
                         fileCount += 1;
                         var entryData = reader.ReadBytes(entry.Length);
-                        File.WriteAllBytes(entryPath, entryData);
+
+                        //for some reason before I added this it would output a bunch of completely empty files.
+                        if(entry.Length > 0)
+                        {
+                            File.WriteAllBytes(entryPath, entryData);
+                        }
+                        
                     }
 
                 }
