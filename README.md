@@ -17,5 +17,4 @@ https://bbqgiraffegames.com
 
 
 ## issues
-when exporting audio from the Windows version of the game, the midi comes out fine,
-but the sound samples are in a format I can not Identify.
+sound for the Windows version comes out as VOC but is actually PCM, working on fixing.
